@@ -17,7 +17,10 @@ function getRightCookie(cookieArray) {
         }
     }
 }
-
+function getPHPSessionID(cookieArray) {
+    var cookieString = cookieArray[0];
+    return cookieString.split(";")[0].split("=")[1];
+}
 function makeAuthId() {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -29,7 +32,7 @@ function makeAuthId() {
 }
 
 exports.isUserAuthenticated = function(username, authKey) {
-    return userNameAuthInfoMap[username].authKey === authKey;
+    return userNameAuthInfoMap[username] && userNameAuthInfoMap[username].authKey === authKey;
 };
 
 exports.authenticateUser = function (username, password, response) {
@@ -53,12 +56,13 @@ exports.authenticateUser = function (username, password, response) {
         var headers = httpResponse.headers;
         if (httpResponse.statusCode === 302 &&
             httpResponse.body.indexOf(config.LoginSuccessfulRecognizer)) {
-
+            console.log(headers["set-cookie"]);
             userNameAuthInfoMap[username] = {
                 cookie: getRightCookie(headers["set-cookie"]),
-                authKey: makeAuthId()
+                authKey: makeAuthId(),
+                phpSessionID: getPHPSessionID(headers["set-cookie"])
             };
-
+            console.log(userNameAuthInfoMap[username].phpSessionID);
             httpResponseServiceHelper.responseWithStatusCodeAndObject(
                 response,
                 251,
@@ -91,14 +95,19 @@ exports.logoutUser = function(username, authKey, response) {
         );
     }
 };
-
-exports.getAccountHistory = function(username, authKey, response) {
+exports.getCookieForUser = function(username) {
+    return userNameAuthInfoMap[username].cookie;
+};
+exports.getPHPSessionIDForUser = function(username) {
+    return userNameAuthInfoMap[username].phpSessionID;
+};
+exports.getAccountHistory = function(username, authKey, res) {
     if(exports.isUserAuthenticated(username, authKey)) {
         var j = request.jar();
         var cookie = request.cookie(userNameAuthInfoMap[username].cookie);
-        j.setCookie(cookie, config.AccountUrl, function(error, cookie) {});
+        j.setCookie(cookie, config.AccountHistoryUrl, function(error, cookie) {});
         request({
-            url: config.AccountUrl,
+            url: config.AccountHistoryUrl,
             jar: j,
             method:"GET"
         }, function (error, response, body) {
@@ -110,7 +119,7 @@ exports.getAccountHistory = function(username, authKey, response) {
                     body,
                     function(accountHistory) {
                         httpResponseServiceHelper.responseWithStatusCodeAndObject(
-                            response,
+                            res,
                             200,
                             accountHistory
                         );
@@ -118,13 +127,28 @@ exports.getAccountHistory = function(username, authKey, response) {
 
             } else {
                 httpResponseServiceHelper.responseWithStatusCodeAndObject(
-                    response,
+                    res,
                     401,
                     {error: "You are not authenticated"}
                 );
             }
         });
 
+    } else {
+        httpResponseServiceHelper.responseWithStatusCodeAndObject(
+            res,
+            401,
+            {error: "You are not authenticated"}
+        );
+    }
+};
+exports.checkIfLogged = function(username, authKey, response) {
+    if(exports.isUserAuthenticated(username, authKey)) {
+        httpResponseServiceHelper.responseWithStatusCodeAndObject(
+            response,
+            253,
+            {success: "You are authenticated"}
+        );
     } else {
         httpResponseServiceHelper.responseWithStatusCodeAndObject(
             response,

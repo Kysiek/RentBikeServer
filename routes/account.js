@@ -1,4 +1,4 @@
-var userManagementServie = require("../services/userManagementService");
+var userManagementService = require("../services/userManagementService");
 
 var httpResponseServiceHelper = require('../Helpers/HTTPResponseServiceHelper');
 
@@ -7,7 +7,7 @@ exports.loginUser = function(req, res) {
         password = req.body["pass"];
     if(username && password) {
 
-        userManagementServie.authenticateUser(username, password, res);
+        userManagementService.authenticateUser(username, password, res);
 
     } else {
         httpResponseServiceHelper.responseWithStatusCodeAndObject(
@@ -22,26 +22,38 @@ exports.logoutUser = function (req, res) {
     var username = req.param("user"),
         authKey = req.param("authKey");
     if(username && authKey) {
-        exports.logoutUser(username, authKey, res);
+        userManagementService.logoutUser(username, authKey, res);
     } else {
         httpResponseServiceHelper.responseWithStatusCodeAndObject(
             res,
             401,
-            {error: "You have provide a phone number and a pin number"}
+            {error: "You have provide a phone number and authKey"}
         );
     }
 };
-
+exports.checkIfLogged = function (req, res) {
+    var username = req.param("user"),
+        authKey = req.param("authKey");
+    if(username && authKey) {
+        userManagementService.checkIfLogged(username, authKey, res);
+    } else {
+        httpResponseServiceHelper.responseWithStatusCodeAndObject(
+            res,
+            401,
+            {error: "You have provide a phone number and authKey"}
+        );
+    }
+};
 exports.getAccountHistory = function (req, res) {
     var username = req.param("user"),
         authKey = req.param("authKey");
     if(username && authKey) {
-        exports.logoutUser(username, authKey, res);
+        userManagementService.getAccountHistory(username, authKey, res);
     } else {
         httpResponseServiceHelper.responseWithStatusCodeAndObject(
             res,
             401,
-            {error: "You have provide a phone number and a pin number"}
+            {error: "You have provide a phone number and authKey"}
         );
     }
 };
