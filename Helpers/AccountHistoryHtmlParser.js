@@ -21,7 +21,6 @@ exports.parseAccountHistoryHtml = function (htmldata, callback) {
                 if(name === "ul" && attribs["data-role"] === "listview"){
                     inAccountHistoryListTag = true;
                 } else if(inAccountHistoryListTag && name === "li" && attribs["data-role"] !== "list-divider") {
-                    console.log("inAccountHistoryListTag   ");
                     inAccountHistoryTag = true;
                 } else if(inAccountHistoryTag && name === "span" && attribs.class === "ui-li-aside") {
                     accountHistoryPriceEntry = true;
