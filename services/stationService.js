@@ -23,8 +23,10 @@ function makeStationsFromObj(obj) {
             "numberOfAvailableBikes":listOfBikes.length,
             "bikeRacks":parseInt(place.bike_racks),
             "listOfBikes": listOfBikes,
-            "latitude": Number(place.lat),
-            "longitude": Number(place.lng)
+            "location": {
+                "latitude":Number(place.lat),
+                "longitude": Number(place.lng)
+            }
         });
     }
     stationsInMemory = resultArray;
@@ -55,6 +57,27 @@ exports.init = function(delayTime) {
     var task = new PeriodicTask(delayTime, downloadAndParseXMLStation);
     task.run();
 };
-exports.getStations = function() {
-    return stationsInMemory;
+exports.getAllStations = function() {
+    var resultObj = [];
+    for(var i = 0, x = stationsInMemory.length; i < x; i++) {
+        resultObj.push({
+            "stationName": stationsInMemory[i]["stationName"],
+            "stationNumber": stationsInMemory[i]["stationNumber"],
+            "numberOfAvailableBikes":stationsInMemory[i]["numberOfAvailableBikes"],
+            "bikeRacks":stationsInMemory[i]["bikeRacks"],
+            "location": stationsInMemory[i]["location"]
+        });
+    }
+    return resultObj;
+};
+exports.getBikesForStation = function(stationNumber) {
+    var bikeListToReturn = [];
+    for(var i = 0, x = stationsInMemory.length; i < x; i++) {
+        if(stationNumber == stationsInMemory[i]["stationNumber"]) {
+            bikeListToReturn = stationsInMemory[i]["listOfBikes"];
+            break;
+        }
+    }
+
+    return bikeListToReturn;
 };

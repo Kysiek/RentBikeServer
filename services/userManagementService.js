@@ -49,7 +49,7 @@ exports.authenticateUser = function (username, password, response) {
         if (err) {
             httpResponseServiceHelper.responseWithStatusCodeAndObject(
                 response,
-                401,
+                461,
                 {error: "Cannot sign in"}
             );
         }
@@ -65,35 +65,27 @@ exports.authenticateUser = function (username, password, response) {
             console.log(userNameAuthInfoMap[username].phpSessionID);
             httpResponseServiceHelper.responseWithStatusCodeAndObject(
                 response,
-                251,
+                200,
                 {authKey: userNameAuthInfoMap[username].authKey, username: username}
             );
 
         } else {
             httpResponseServiceHelper.responseWithStatusCodeAndObject(
                 response,
-                401,
-                {error: "Something has gone wrong"}
+                461,
+                {error: "Cannot sign in"}
             );
         }
     });
 };
 
-exports.logoutUser = function(username, authKey, response) {
-    if(exports.isUserAuthenticated(username, authKey)) {
-        delete userNameAuthInfoMap[username];
-        httpResponseServiceHelper.responseWithStatusCodeAndObject(
-            response,
-            252,
-            {success: "Successfully logout"}
-        );
-    } else {
-        httpResponseServiceHelper.responseWithStatusCodeAndObject(
-            response,
-            401,
-            {error: "You are not authenticated"}
-        );
-    }
+exports.logoutUser = function(username,res) {
+    delete userNameAuthInfoMap[username];
+    httpResponseServiceHelper.responseWithStatusCodeAndObject(
+        res,
+        200,
+        {success: "Successfully logout"}
+    );
 };
 exports.getCookieForUser = function(username) {
     return userNameAuthInfoMap[username].cookie;
@@ -101,59 +93,65 @@ exports.getCookieForUser = function(username) {
 exports.getPHPSessionIDForUser = function(username) {
     return userNameAuthInfoMap[username].phpSessionID;
 };
-exports.getAccountHistory = function(username, authKey, res) {
-    if(exports.isUserAuthenticated(username, authKey)) {
-        var j = request.jar();
-        var cookie = request.cookie(userNameAuthInfoMap[username].cookie);
-        j.setCookie(cookie, config.AccountHistoryUrl, function(error, cookie) {});
-        request({
-            url: config.AccountHistoryUrl,
-            jar: j,
-            method:"GET"
-        }, function (error, response, body) {
+exports.getAccountHistory = function(username, res) {
+    var j = request.jar();
+    var cookie = request.cookie(userNameAuthInfoMap[username].cookie);
+    j.setCookie(cookie, config.AccountHistoryUrl, function(error, cookie) {});
+    request({
+        url: config.AccountHistoryUrl,
+        jar: j,
+        method:"GET"
+    }, function (error, response, body) {
 
-            if(body.indexOf(config.AccountHistoryRecognizer) > -1) {
+        if(body.indexOf(config.AccountHistoryRecognizer) > -1) {
 
-                accountHistoryHtmlParser.parseAccountHistoryHtml(
+            accountHistoryHtmlParser.parseAccountHistoryHtml(
 
-                    body,
-                    function(accountHistory) {
-                        httpResponseServiceHelper.responseWithStatusCodeAndObject(
-                            res,
-                            200,
-                            accountHistory
-                        );
-                });
+                body,
+                function(accountHistory) {
+                    httpResponseServiceHelper.responseWithStatusCodeAndObject(
+                        res,
+                        200,
+                        accountHistory
+                    );
+            });
 
-            } else {
-                httpResponseServiceHelper.responseWithStatusCodeAndObject(
-                    res,
-                    401,
-                    {error: "You are not authenticated"}
-                );
-            }
-        });
-
+        } else {
+            httpResponseServiceHelper.responseWithStatusCodeAndObject(
+                res,
+                401,
+                {error: "You are not authenticated"}
+            );
+        }
+    });
+};
+exports.checkIfLogged = function(username, authKey, response) {
+    httpResponseServiceHelper.responseWithStatusCodeAndObject(
+        response,
+        253,
+        {success: "You are authenticated"}
+    );
+};
+exports.handleControllerUrl = function (req,res, callback) {
+    var username = req.param("user"),
+        authKey = req.param("authKey");
+    if(username && authKey) {
+        if(exports.isUserAuthenticated(username, authKey)) {
+            callback()
+        } else {
+            httpResponseServiceHelper.responseWithStatusCodeAndObject(
+                res,
+                401,
+                {error: "You are not authenticated"}
+            );
+        }
     } else {
         httpResponseServiceHelper.responseWithStatusCodeAndObject(
             res,
-            401,
-            {error: "You are not authenticated"}
+            462,
+            {error: "You have to provide username and authKey"}
         );
     }
+
 };
-exports.checkIfLogged = function(username, authKey, response) {
-    if(exports.isUserAuthenticated(username, authKey)) {
-        httpResponseServiceHelper.responseWithStatusCodeAndObject(
-            response,
-            253,
-            {success: "You are authenticated"}
-        );
-    } else {
-        httpResponseServiceHelper.responseWithStatusCodeAndObject(
-            response,
-            401,
-            {error: "You are not authenticated"}
-        );
-    }
-};
+
