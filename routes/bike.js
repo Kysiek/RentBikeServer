@@ -4,35 +4,35 @@
 
 var httpResponseServiceHelper = require('../Helpers/HTTPResponseServiceHelper');
 var bikeService = require('../services/bikeService');
+var userManagementService = require('../services/userManagementService');
 
 exports.rentBike = function (req,res) {
-    var username = req.param("user"),
-        authKey = req.param("authKey"),
-        bikeNumber = req.param("bikeNumber");
-
-    if(username && authKey && bikeNumber) {
-        bikeService.rentBike(username, authKey, bikeNumber, res);
-    } else {
-        httpResponseServiceHelper.responseWithStatusCodeAndObject(
-            res,
-            401,
-            {error: "You have to provide username, authKey and bikeNumber"}
-        );
-    }
+    userManagementService.handleControllerUrl(req,res, function() {
+        var bikeNumber = req.body["bikeNumber"];
+        if(bikeNumber) {
+            bikeService.rentBike(req.param("user"), bikeNumber, res);
+        } else {
+            httpResponseServiceHelper.responseWithStatusCodeAndObject(
+                res,
+                470,
+                {error: "You have to provide bike number"}
+            );
+        }
+    });
 };
 
 exports.looseFromRack = function (req,res) {
-    var username = req.param("user"),
-        authKey = req.param("authKey"),
-        bikeNumber = req.param("bikeNumber");
+    userManagementService.handleControllerUrl(req,res, function() {
+        var bikeNumber = req.body["bikeNumber"];
+        if(bikeNumber) {
+            bikeService.looseFromRack(req.param("user"), bikeNumber, res);
+        } else {
+            httpResponseServiceHelper.responseWithStatusCodeAndObject(
+                res,
+                470,
+                {error: "You have to provide bike number"}
+            );
+        }
+    });
 
-    if(username && authKey && bikeNumber) {
-        bikeService.looseFromRack(username, authKey, bikeNumber, res);
-    } else {
-        httpResponseServiceHelper.responseWithStatusCodeAndObject(
-            res,
-            401,
-            {error: "You have to provide username, authKey and bikeNumber"}
-        );
-    }
 };
