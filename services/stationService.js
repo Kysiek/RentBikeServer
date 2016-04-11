@@ -14,7 +14,7 @@ function makeStationsFromObj(obj) {
             listOfBikes = [];
         listOfBikesString.forEach(function(entry) {
             if(entry !== "0") {
-                listOfBikes.push(parseInt(entry));
+                listOfBikes.push({"number": parseInt(entry)});
             }
         });
         resultArray.push({
