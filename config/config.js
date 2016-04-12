@@ -11,8 +11,10 @@ module.exports = {
      AccountHistoryUrl: 'https://nextbike.net/pl/m/account',
      LoginSuccessfulRecognizer: 'pl/m/logout',
      AccountHistoryRecognizer: 'data-role="list-divider"',
+     CurrentBikesRecognizer: 'data-role="list-divider"',
      BikeNumberNotFoundError: 'div class="errors"',
      BikeNumberNotFound: 'not found.',
+     ReturnBike: 'Dziękujemy! Rower został zwrócony.',
      RightCookieRecognizer: 'parameters[dlkey]',
      stationsNameNumberMap : {
           'Pl. Kromera': 5901,

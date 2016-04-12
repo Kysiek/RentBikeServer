@@ -19,8 +19,10 @@ app.post('/account/login', account.loginUser);
 app.get('/account/logged', account.checkIfLogged);
 app.get('/account/logout', account.logoutUser);
 app.get('/account/history', account.getAccountHistory);
-app.post('/bike/rent', bikes.rentBike);
-app.post('/bike/loose', bikes.looseFromRack);
+app.get('/bike/rent', bikes.rentBike);
+app.get('/bike/loose', bikes.looseFromRack);
+app.get('/bike/rented',bikes.getRented);
+app.get('/bike/return',bikes.returnBike);
 app.get('/stations/all', stations.getAllStations);
 app.get('/stations/:number/bikes',stations.getBikesForStation);
 

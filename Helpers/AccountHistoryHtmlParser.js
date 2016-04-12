@@ -13,7 +13,6 @@ exports.parseAccountHistoryHtml = function (htmldata, callback) {
         inAccountHistoryTag = false,
         accountHistoryEntry = false,
         accountHistoryPriceEntry = false,
-        currentAccountHistoryEntry = {},
         accountHistoryData = [],
          parser = new htmlparser.Parser({
             onopentag: function(name, attribs){
