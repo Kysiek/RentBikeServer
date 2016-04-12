@@ -60,8 +60,8 @@
           <file leaf-file-name="bikeService.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/services/bikeService.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="1.8993174">
-                  <caret line="68" column="57" selection-start-line="68" selection-start-column="57" selection-end-line="68" selection-end-column="57" />
+                <state vertical-scroll-proportion="0.36177474">
+                  <caret line="66" column="37" selection-start-line="66" selection-start-column="37" selection-end-line="66" selection-end-column="37" />
                   <folding>
                     <element signature="e#0#41#0" expanded="false" />
                   </folding>
@@ -1451,26 +1451,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/services/userManagementService.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-80.31035">
-          <caret line="137" column="29" selection-start-line="137" selection-start-column="29" selection-end-line="137" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Helpers/AccountHistoryHtmlParser.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.42320818">
           <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="22" column="39" selection-start-line="22" selection-start-column="39" selection-end-line="22" selection-end-column="39" />
           <folding />
         </state>
       </provider>
@@ -1493,10 +1477,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/services/userManagementService.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-80.31035">
+          <caret line="137" column="29" selection-start-line="137" selection-start-column="29" selection-end-line="137" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="22" column="39" selection-start-line="22" selection-start-column="39" selection-end-line="22" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/services/bikeService.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.8993174">
-          <caret line="68" column="57" selection-start-line="68" selection-start-column="57" selection-end-line="68" selection-end-column="57" />
+        <state vertical-scroll-proportion="0.36177474">
+          <caret line="66" column="37" selection-start-line="66" selection-start-column="37" selection-end-line="66" selection-end-column="37" />
           <folding>
             <element signature="e#0#41#0" expanded="false" />
           </folding>
