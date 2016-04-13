@@ -142,7 +142,8 @@ exports.getRentedBikes = function(username, res) {
                 body,
                 function(currentBikes) {
                     for (var i = 0; i < currentBikes.length; i++) {
-                        currentBikes[i]["startStationName"] = bikeRentalToStartStation[currentBikes[i]["bikeNumber"] + "_" + currentBikes[i]["lockNumber"]]
+                        currentBikes[i]["startStationNumber"] = bikeRentalToStartStation[currentBikes[i]["bikeNumber"] + "_" + currentBikes[i]["lockNumber"]]
+                        currentBikes[i]["startStationName"] = stationService.getStationNameByNumber([currentBikes[i]["bikeNumber"] + "_" + currentBikes[i]["lockNumber"]])
                     }
                     httpResponseServiceHelper.responseWithStatusCodeAndObject(
                         res,

@@ -63,6 +63,14 @@ exports.getStationUIDByNumber = function(stationNumber) {
         }
     }
 };
+exports.getStationNameByNumber = function(stationNumber) {
+    for(var i = 0; i < stationsInMemory.length; i++) {
+        console.log(stationsInMemory[i].stationNumber + "vs" + stationNumber);
+        if(stationsInMemory[i].stationNumber == stationNumber) {
+            return stationsInMemory[i].stationName;
+        }
+    }
+};
 
 exports.init = function(delayTime) {
     var task = new PeriodicTask(delayTime, downloadAndParseXMLStation);
