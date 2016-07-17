@@ -49,13 +49,11 @@ exports.getRented = function (req,res) {
 exports.returnBike = function (req,res) {
     userManagementService.handleControllerUrl(req,res, function() {
         var bikeNumber = req.param("bikeNumber"),
-            stationNumber = req.param("stationNumber");
-
-        console.log(bikeNumber, stationNumber);
-
+            stationNumber = req.param("stationNumber"),
+            comment = req.param("comment");
 
         if(bikeNumber && stationNumber) {
-            bikeService.returnBike(req.param("user"), bikeNumber, stationNumber, res);
+            bikeService.returnBike(req.param("user"), bikeNumber, stationNumber, comment, res);
         } else {
             httpResponseServiceHelper.responseWithStatusCodeAndObject(
                 res,

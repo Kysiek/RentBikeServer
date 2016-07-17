@@ -57,7 +57,6 @@ function downloadAndParseXMLStation() {
 
 exports.getStationUIDByNumber = function(stationNumber) {
     for(var i = 0; i < stationsInMemory.length; i++) {
-        console.log(stationsInMemory[i].stationNumber + "vs" + stationNumber);
         if(stationsInMemory[i].stationNumber == stationNumber) {
             return stationsInMemory[i].stationUID;
         }
@@ -65,8 +64,7 @@ exports.getStationUIDByNumber = function(stationNumber) {
 };
 exports.getStationNameByNumber = function(stationNumber) {
     for(var i = 0; i < stationsInMemory.length; i++) {
-        console.log(stationsInMemory[i].stationNumber + "vs" + stationNumber);
-        if(stationsInMemory[i].stationNumber == stationNumber) {
+        if(stationsInMemory[i].stationNumber == parseInt(stationNumber)) {
             return stationsInMemory[i].stationName;
         }
     }

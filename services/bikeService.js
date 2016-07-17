@@ -65,14 +65,14 @@ exports.rentBike = function(username, bikeNumber, stationNumber, res) {
         });
 };
 
-exports.returnBike = function(username, bikeNumber, stationNumber, res) {
+exports.returnBike = function(username, bikeNumber, stationNumber, comment, res) {
     var formData = {};
     formData['new_return_street'] = stationNumber;
     formData['bike_no'] = bikeNumber;
     formData[config.ActionStringKeyFormData] = 'return';
     formData['return_place_id'] = stationService.getStationUIDByNumber(stationNumber);
     formData['cityId'] = 148;
-    formData['end_street2'] = "test";
+    formData['end_street2'] = comment == undefined ? "test" : comment;
     formData["PHPSESSID"] = userManagementService.getPHPSessionIDForUser(username);
 
     var j = request.jar();
